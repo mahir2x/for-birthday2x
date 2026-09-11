@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Tania & Tofa</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <!-- Ambient Particles Canvas -->
+    <canvas id="ambient-canvas"></canvas>
+    <!-- Fireworks Canvas (Hidden initially) -->
+    <canvas id="fireworks-canvas"></canvas>
+
+    <!-- SCREEN 1: The Heart Taps -->
+    <section id="screen-1" class="screen active">
+        <h3 class="hint-text">Tap the heart to unlock magic...</h3>
+        <div class="heart-container" onclick="tapHeart()">
+            <svg class="heart-svg" viewBox="0 0 32 29.6">
+                <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,16,21.2,16,21.2
+                s16-11.8,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+            </svg>
+            <div id="tap-counter">0/5</div>
+        </div>
+    </section>
+
+    <!-- SCREEN 2: Greeting Animation -->
+    <section id="screen-2" class="screen hidden">
+        <div class="greeting-box">
+            <h1 class="elegant-title">Happy Birthday</h1>
+            <h2 class="names-title"><span class="gold">Tania</span> & <span class="gold">Tofa</span></h2>
+            <p class="subtitle">To the two most beautiful souls in my life.</p>
+            <button class="continue-btn fade-in-delay" onclick="nextScreen(2, 3)">Continue ✨</button>
+        </div>
+    </section>
+
+    <!-- SCREEN 3: The Letter -->
+    <section id="screen-3" class="screen hidden">
+        <div class="letter-paper">
+            <div class="letter-content">
+                <h3>Dear Mom (Tania) & Khalamoni (Tofa),</h3>
+                <p>
+                    On this beautiful day, I just want to pause and thank the universe for both of you. 
+                    You two are the heartbeats of our family, spreading warmth, endless love, and kindness wherever you go.
+                </p>
+                <p>
+                    Mom, thank you for being my safe haven and my biggest strength. Khalamoni, thank you for your infectious smile and caring soul. 
+                    Life is infinitely better with you both in it. 
+                </p>
+                <p>
+                    May this year bring you boundless happiness, perfect health, and moments so beautiful that they turn into lifelong memories. I love you both from the deepest corner of my heart!
+                </p>
+                <p class="signature">Yours always,<br>Mahir</p>
+            </div>
+            <button class="continue-btn" onclick="nextScreen(3, 4)" style="margin-top: 30px;">Continue ✨</button>
+        </div>
+    </section>
+
+    <!-- SCREEN 4: The Cake & Candles -->
+    <section id="screen-4" class="screen hidden">
+        <div class="cake-instruction">Tap the flames to blow out the candles and make a wish!</div>
+        
+        <div class="cake-wrapper">
+            <!-- Candles -->
+            <div class="candles-container">
+                <div class="candle-wrapper" onclick="blowCandle(this)">
+                    <div class="flame"></div>
+                    <div class="candle"></div>
+                </div>
+                <div class="candle-wrapper" onclick="blowCandle(this)">
+                    <div class="flame"></div>
+                    <div class="candle"></div>
+                </div>
+                <div class="candle-wrapper" onclick="blowCandle(this)">
+                    <div class="flame"></div>
+                    <div class="candle"></div>
+                </div>
+            </div>
+            <!-- Cake Body -->
+            <div class="cake-top-layer">
+                <div class="drip drip-1"></div>
+                <div class="drip drip-2"></div>
+                <div class="drip drip-3"></div>
+                <div class="drip drip-4"></div>
+                <div class="drip drip-5"></div>
+            </div>
+            <div class="cake-bottom-layer"></div>
+            <div class="cake-plate"></div>
+        </div>
+    </section>
+
+    <!-- SCREEN 5: Finale -->
+    <section id="screen-5" class="screen hidden finale-screen">
+        <div class="finale-content">
+            <h1 class="elegant-title giant">Happy Birthday!</h1>
+            <h2 class="names-title"><span class="gold">Mom</span> & <span class="gold">Khalamoni</span></h2>
+            <p class="finale-wish">Have a spectacular life filled with love, laughter, and endless blessings. You deserve the world!</p>
+        </div>
+    </section>
+
+    <script src="index.js"></script>
+</body>
+</html>
