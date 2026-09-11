@@ -1,27 +1,17 @@
 /* ==============================================
-   AUDIO SETUP (Mobile Unblock Trick)
+   AUDIO SETUP (Bug-Free Direct Play Engine)
 ============================================== */
 const bgMusic = new Audio('music.mp3');
 bgMusic.loop = true;
-bgMusic.volume = 0.5;
+bgMusic.volume = 0.6;
 
 const fireworkSoundPath = 'firework.mp3';
-let audioUnlocked = false;
 
-// ไอফোনে বা অ্যান্ড্রয়েডে অডিও ব্লক খোলার ট্রিক
-function unlockAudio() {
-    if (!audioUnlocked) {
-        bgMusic.play().catch(e => console.log("Music play issue:", e));
-        
-        // Pre-warm fireworks sound for mobile browsers
-        let dummy = new Audio(fireworkSoundPath);
-        dummy.volume = 0; // সাইলেন্ট
-        dummy.play().then(() => {
-            dummy.pause();
-            dummy.currentTime = 0;
-        }).catch(e => {});
-        
-        audioUnlocked = true;
+function startMusic() {
+    if (bgMusic.paused) {
+        bgMusic.play().catch(err => {
+            console.log("Waiting for user interaction to play music...");
+        });
     }
 }
 
@@ -31,13 +21,12 @@ function unlockAudio() {
 
 let taps = 0;
 function tapHeart() {
-    unlockAudio(); // আনলক অডিও
+    startMusic(); 
     taps++;
     
     const heart = document.querySelector('.heart-container');
     const counter = document.getElementById('tap-counter');
     
-    // Heart jump effect
     heart.style.transform = `scale(1.3) rotate(${Math.random() * 20 - 10}deg)`;
     setTimeout(() => heart.style.transform = 'scale(1)', 150);
     
@@ -49,6 +38,7 @@ function tapHeart() {
 }
 
 function nextScreen(currentId, nextId) {
+    startMusic(); 
     const current = document.getElementById(`screen-${currentId}`);
     const next = document.getElementById(`screen-${nextId}`);
     
@@ -117,7 +107,7 @@ class Particle {
     }
 }
 
-for (let i = 0; i < 70; i++) particles.push(new Particle()); // 70 for better mobile performance
+for (let i = 0; i < 70; i++) particles.push(new Particle());
 
 function animateAmbient() {
     aCtx.clearRect(0, 0, aW, aH);
@@ -148,15 +138,15 @@ class Firework {
         this.targetY = Math.random() * (fH / 2);
         this.vx = (Math.random() - 0.5) * 2;
         this.vy = -(Math.random() * 3 + 8);
-        this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+        this.color = `hsl(${Math.random() * 360}, 100%, 70%)`; // Brighter fireworks
     }
     update() {
         this.x += this.vx;
         this.y += this.vy;
-        this.vy += 0.1; // gravity
+        this.vy += 0.1;
         if (this.vy >= 0 || this.y <= this.targetY) {
             this.explode();
-            return true; // remove
+            return true;
         }
         return false;
     }
@@ -168,10 +158,10 @@ class Firework {
     }
     explode() {
         let boomSound = new Audio(fireworkSoundPath);
-        boomSound.volume = 0.3;
+        boomSound.volume = 0.5;
         boomSound.play().catch(e => {});
 
-        for (let i = 0; i < 50; i++) { // 50 for smooth mobile render
+        for (let i = 0; i < 60; i++) {
             fireworkParticles.push(new FParticle(this.x, this.y, this.color));
         }
     }
@@ -183,16 +173,16 @@ class FParticle {
         this.y = y;
         this.color = color;
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 5 + 2;
+        const speed = Math.random() * 6 + 2;
         this.vx = Math.cos(angle) * speed;
         this.vy = Math.sin(angle) * speed;
         this.alpha = 1;
         this.decay = Math.random() * 0.02 + 0.01;
     }
     update() {
-        this.vx *= 0.95; 
-        this.vy *= 0.95;
-        this.vy += 0.1;  
+        this.vx *= 0.94; 
+        this.vy *= 0.94;
+        this.vy += 0.08;  
         this.x += this.vx;
         this.y += this.vy;
         this.alpha -= this.decay;
@@ -204,6 +194,8 @@ class FParticle {
         fCtx.beginPath();
         fCtx.arc(this.x, this.y, 2, 0, Math.PI * 2);
         fCtx.fillStyle = this.color;
+        fCtx.shadowBlur = 10;
+        fCtx.shadowColor = this.color;
         fCtx.fill();
         fCtx.restore();
     }
@@ -217,7 +209,7 @@ function animateFireworks() {
     fCtx.fillRect(0, 0, fW, fH);
     fCtx.globalCompositeOperation = 'lighter';
 
-    if (Math.random() < 0.06) fireworks.push(new Firework());
+    if (Math.random() < 0.07) fireworks.push(new Firework());
 
     for (let i = fireworks.length - 1; i >= 0; i--) {
         if (fireworks[i].update()) fireworks.splice(i, 1);
