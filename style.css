@@ -1,1 +1,128 @@
+/* ==============================================
+   PREMIUM BIRTHDAY THEME (Mobile Optimized)
+============================================== */
 
+:root {
+    --bg-dark: #0a0b10;
+    --gold: #f2c792;
+    --rose-gold: #b76e79;
+    --text-light: #fefefe;
+    --paper-bg: #fdfbf7;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Poppins', sans-serif;
+    
+    /* Mobile Anti-Glitch Rules */
+    position: fixed; 
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100dvh; /* 100dvh for exact mobile screen fit */
+    overflow: hidden; 
+    -webkit-tap-highlight-color: transparent; /* Removes blue tap box */
+    user-select: none; /* Prevents text selection on rapid tapping */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+#fireworks-canvas { z-index: 5; opacity: 0; transition: opacity 2s ease; }
+
+.screen {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    transform: scale(0.95); z-index: 10;
+}
+.screen.active { opacity: 1; pointer-events: auto; transform: scale(1); }
+.hidden { display: none !important; }
+
+/* Fonts */
+.elegant-title { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--text-light); margin-bottom: 10px; text-shadow: 0 0 15px rgba(255,255,255,0.3); text-align: center; line-height: 1.2;}
+.names-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 15px; text-align: center; }
+.gold { color: var(--gold); }
+.subtitle { font-family: 'Poppins', sans-serif; font-size: 1rem; color: #ccc; margin-bottom: 40px; font-weight: 300; text-align: center; padding: 0 20px;}
+
+/* Button */
+.continue-btn {
+    background: transparent; color: var(--gold); border: 1px solid var(--gold);
+    padding: 12px 35px; border-radius: 30px; font-family: 'Poppins', sans-serif; font-size: 1rem;
+    cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(242, 199, 146, 0.1);
+    outline: none;
+}
+.continue-btn:active { transform: scale(0.95); background: var(--gold); color: #000; } /* Mobile tap feedback */
+
+/* SCREEN 1: HEART */
+.hint-text { font-family: 'Poppins'; font-weight: 300; color: #888; margin-bottom: 30px; animation: pulseText 2s infinite; text-align: center;}
+.heart-container { position: relative; cursor: pointer; transition: transform 0.2s; padding: 20px; /* bigger hit area */ }
+.heart-svg { width: 120px; fill: #ff3b3b; filter: drop-shadow(0 0 20px rgba(255,59,59,0.5)); animation: heartbeat 1.5s infinite; }
+#tap-counter { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 700; color: #fff; font-size: 1.2rem; pointer-events: none; }
+
+@keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); filter: drop-shadow(0 0 30px rgba(255,59,59,0.8)); } }
+@keyframes pulseText { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+/* SCREEN 2 */
+.greeting-box { text-align: center; width: 100%; padding: 0 20px; }
+.fade-in-delay { opacity: 0; animation: fadeIn 1s 1.5s forwards; }
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* SCREEN 3: LETTER */
+.letter-paper {
+    background: var(--paper-bg); color: #222; max-width: 600px; width: 90%;
+    max-height: 80vh; overflow-y: auto; /* Scrollable if phone screen is too small */
+    padding: 30px 25px; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    text-align: left; position: relative;
+}
+.letter-paper::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 10px; background: repeating-linear-gradient(45deg, var(--rose-gold), var(--rose-gold) 10px, transparent 10px, transparent 20px); border-radius: 12px 12px 0 0; }
+.letter-content h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 15px; color: var(--rose-gold); }
+.letter-content p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 15px; color: #444; }
+.signature { font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: var(--rose-gold); margin-top: 20px; text-align: right; }
+.letter-paper::-webkit-scrollbar { width: 5px; }
+.letter-paper::-webkit-scrollbar-thumb { background: var(--rose-gold); border-radius: 10px; }
+
+/* SCREEN 4: CAKE */
+.cake-instruction { font-size: 1.1rem; margin-bottom: 40px; color: var(--gold); font-family: 'Playfair Display'; text-align: center; padding: 0 20px; animation: pulseText 2s infinite; }
+.cake-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
+
+.candles-container { display: flex; gap: 25px; margin-bottom: -10px; z-index: 3; }
+.candle-wrapper { display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 15px; margin: -15px; /* Bigger touch target for phones */ }
+.candle { width: 12px; height: 50px; background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ffb6c1 5px, #ffb6c1 10px); border-radius: 4px; border: 1px solid #ddd; }
+
+.flame {
+    width: 16px; height: 26px; background: #ffcc00; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: 0 0 20px #ffcc00, 0 0 40px #ff6600; margin-bottom: 5px; transform-origin: bottom center;
+    animation: flicker 0.5s infinite alternate; transition: opacity 0.3s;
+}
+.candle-wrapper.blown .flame { opacity: 0; pointer-events: none; }
+@keyframes flicker { 0% { transform: scale(1) rotate(-2deg); } 100% { transform: scale(1.1) rotate(2deg); } }
+
+/* Cake Body */
+.cake-top-layer { width: 220px; height: 80px; background: #ff9a9e; border-radius: 10px 10px 0 0; position: relative; z-index: 2; box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1); }
+.cake-bottom-layer { width: 260px; height: 90px; background: #fecfef; border-radius: 5px 5px 0 0; position: relative; z-index: 1; margin-top: -10px; box-shadow: inset 0 -15px 25px rgba(0,0,0,0.1); }
+.cake-plate { width: 320px; height: 15px; background: #e0e0e0; border-radius: 50%; margin-top: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+
+.drip { position: absolute; background: #fff; width: 20px; height: 30px; border-radius: 0 0 10px 10px; top: 0; }
+.drip-1 { left: 10%; height: 40px; } .drip-2 { left: 30%; height: 25px; } .drip-3 { left: 50%; height: 50px; } .drip-4 { left: 70%; height: 30px; } .drip-5 { left: 85%; height: 45px; }
+.cake-top-layer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 15px; background: #fff; border-radius: 10px 10px 0 0; }
+
+/* SCREEN 5: FINALE */
+.finale-screen { z-index: 20; background: rgba(10, 11, 16, 0.6); backdrop-filter: blur(5px); text-align: center; padding: 0 20px; }
+.elegant-title.giant { font-size: 4.5rem; color: #fff; text-shadow: 0 0 20px var(--rose-gold), 0 0 40px var(--gold); margin-bottom: 10px; }
+.finale-wish { font-size: 1.1rem; color: #ddd; max-width: 600px; margin: 20px auto; line-height: 1.6; }
+
+/* Mobile Responsiveness Auto-Scaling */
+@media (max-width: 450px) {
+    .elegant-title { font-size: 3.2rem; }
+    .elegant-title.giant { font-size: 3.5rem; }
+    .names-title { font-size: 1.8rem; }
+    .cake-wrapper { transform: scale(0.85); } /* Perfect fit for small phones */
+    .finale-wish { font-size: 1rem; }
+}
+@media (max-width: 350px) {
+    .cake-wrapper { transform: scale(0.75); } /* Perfect fit for extremely small phones */
+}
